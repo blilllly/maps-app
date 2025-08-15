@@ -60,8 +60,8 @@ export class FullscreenMapPageComponent implements AfterViewInit {
     const { lng, lat } = this.coordinates();
 
     const map = new maplibregl.Map({
-      container: 'map', // container id
-      style: `https://api.maptiler.com/maps/streets/style.json?key=${this.environments.api_key}`, // style URL
+      container: element, // container id
+      style: `https://api.maptiler.com/maps/streets-v2/style.json?key=${this.environments.api_key}`, // style URL maptiler
       center: [lng, lat], // starting position [lng, lat]
       zoom: this.zoom(), // starting zoom
       attributionControl: false, //remove mapLibre logo
