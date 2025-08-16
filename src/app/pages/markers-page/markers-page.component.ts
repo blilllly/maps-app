@@ -6,9 +6,10 @@ import {
   viewChild,
 } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import maplibregl from 'maplibre-gl';
+import maplibregl, { LngLatLike } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { v4 as UUID } from 'uuid';
+import { JsonPipe } from '@angular/common';
 
 interface Marker {
   id: string;
@@ -17,7 +18,7 @@ interface Marker {
 
 @Component({
   selector: 'app-markers-page',
-  imports: [],
+  imports: [JsonPipe],
   templateUrl: './markers-page.component.html',
 })
 export class MarkersPageComponent implements AfterViewInit {
@@ -45,15 +46,6 @@ export class MarkersPageComponent implements AfterViewInit {
         type: 'globe', // Set projection to globe
       });
     });
-
-    // const marker = new maplibregl.Marker({
-    //   draggable: false,
-    //   color: '#000',
-    // })
-    //   .setLngLat([-43.183382, -22.971961])
-    //   .addTo(map);
-
-    // marker.on('dragend', (event) => console.log(event));
 
     this.mapListeners(map);
   }
@@ -84,7 +76,24 @@ export class MarkersPageComponent implements AfterViewInit {
       id: UUID(),
       maplibreMarker: marker,
     };
-    this.markers.set([newMarker, ...this.markers()]);
+    this.markers.update((markers) => [newMarker, ...this.markers()]);
+    // this.markers.set([newMarker, ...this.markers()]);
     console.log(this.markers());
+  }
+
+  flyToMarker(lngLat: LngLatLike) {
+    if (!this.map()) return;
+    this.map()?.flyTo({
+      center: lngLat,
+    });
+  }
+
+  deleteMarker(marker: Marker) {
+    if (!this.map()) return;
+    const map = this.map();
+    marker.maplibreMarker.remove();
+
+    this.markers.set(this.markers().filter((m) => m.id !== marker.id));
+    // this.markers.update(this.markers().filter((m) => m.id !== marker.id));
   }
 }
