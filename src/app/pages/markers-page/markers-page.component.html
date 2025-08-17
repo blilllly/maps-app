@@ -1,6 +1,8 @@
-<div class="h-[calc(100vh-64px)]" id="map" #map></div>
+<div class="h-[60vh] sm:h-[calc(100vh-64px)]" id="map" #map></div>
 
-<section class="fixed w-[370px] bg-gray-900 rounded top-20 left-5 p-5">
+<section
+  class="h-[40vh] sm:fixed sm:w-[370px] bg-gray-900 sm:rounded sm:top-20 sm:left-5 p-5 overflow-y-scroll"
+>
   <h2 class="text-xl font-bold text-white mb-2">Marcadores</h2>
   <div class="flex flex-col gap-2">
     @for (marker of markers(); track marker.id) {
